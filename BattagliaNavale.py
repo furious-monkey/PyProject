@@ -1,22 +1,37 @@
 '''
 Programma per giocare a Battaglia Navale contro il computer.
+
+~ Fase 1: Piazzamento delle navi.
+Piazzamento delle navi in base a quelle disponibili, descritte secondo (lunghezza_nave, quantita_disponibile) nella lista sottostante.
++ Comandi:
+← ↑ → ↓ : Per muovere la selezione della nave.
+   r    : Per ruotare la nave.
+<Invio> : Per piazzare la nave.
+
+
+~ Fase 2: Gioco.
+
++ Comandi:
+← ↑ → ↓ : Per muovere la il mirino.
+<Invio> : Per colpire il punto selezionato.
 '''
 import sys
 from os import system
 from random import randint
-from time import sleep
 from keyboard import add_hotkey, remove_hotkey, wait
 
 # -----------
 # Game variables
 BOARD_WIDTH = 10
 BOARD_HEIGHT = 10
-AVAILABLE_BOATS = [(4, 1), (3, 2), (2, 3)]
+AVAILABLE_BOATS = [(4, 1),
+                   (3, 2),
+                   (2, 3)]
 
 # -----------
 # Graphic elements
 EMPTY = ' '
-MISS = '▿'
+MISS = '·'
 BOAT = '○'
 HIT = '●'
 SUNK = '◆'
@@ -309,18 +324,12 @@ class Game:
                 self.opponent_boats.append(boat)
                 for y, x in boat.coords:
                     self.opponent_board[y][x] = 2
-                    
-                print('OPPONENT BOAT:', boat)
-                sleep(3)
 
                 # PLAYER BOATS
                 boat = self.screen.init_boat(self.player_board, l)
                 self.player_boats.append(boat)
                 for y, x in boat.coords:
                     self.player_board[y][x] = 2
-                    
-                print('PLAYER BOAT:', boat)
-                sleep(3)
 
     def start(self):
         self.in_game = True
