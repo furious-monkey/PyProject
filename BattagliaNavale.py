@@ -1,4 +1,12 @@
 '''
+File: BattagliaNavale.py
+Author: Njco - @nkoexe
+Date: 25-05-2022
+Version: 1.0
+Copyright: 2022 Njco
+License: MIT
+
+
 Programma per giocare a Battaglia Navale contro il computer.
 
 ~ Fase 1: Piazzamento delle navi.
@@ -320,7 +328,7 @@ class Game:
 
                 break
 
-    def init_boats(self, player: bool = True):
+    def init_boats(self):
         for l, q in AVAILABLE_BOATS:
             for j in range(q):
                 # RANDOM OPPONENT BOATS
