@@ -10,13 +10,18 @@ Piazzamento delle navi in base a quelle disponibili, descritte secondo (lunghezz
 
 
 ~ Fase 2: Gioco.
-
+A turno si colpisce un punto del campo avversario, vince chi affonda tutte le navi avversarie.
 + Comandi:
-← ↑ → ↓ : Per muovere la il mirino.
+← ↑ → ↓ : Per muovere il mirino.
 <Invio> : Per colpire il punto selezionato.
+
+Requisiti:
+keyboard: pip install keyboard (richiede sudo su linux, anche per l'esecuzione)
+
+Programma creato per Windows, su Unix potrebbero esserci problemi nella gestione dell'input.
 '''
-import sys
-from os import system
+
+from os import system, name
 from random import randint
 from keyboard import add_hotkey, remove_hotkey, wait
 
@@ -44,10 +49,7 @@ HORIZONTAL = 0
 VERTICAL = 1
 
 # Testing
-SHOW_OPPONENT_BOARD = True
-
-
-logfile = open('log.txt', 'a')
+SHOW_OPPONENT_BOARD = False
 
 
 class Boat:
@@ -81,6 +83,11 @@ class Boat:
 class Screen:
     def __init__(self):
         self.pointerx = self.pointery = 0
+
+        if name == 'nt':
+            self.clear = lambda: system('cls')
+        else:
+            self.clear = lambda: print('\033c')
 
     def render_board(self, board: list, selected: list = None, hidden: bool = False):
         # Turn the board list into a string
@@ -125,18 +132,15 @@ class Screen:
 
         else:
             # General case with both boards (when playing)
-            first_board = self.render_board(first_board, selected, not SHOW_OPPONENT_BOARD) + '\n  ~' + '^~' * (BOARD_WIDTH*2-2) + '\n'  # Separator between boards
+            first_board = self.render_board(first_board, selected, not SHOW_OPPONENT_BOARD) + '\n  ~' + '^~' * (BOARD_WIDTH*2-2)  # Separator between boards
             second_board = self.render_board(second_board)
 
         # Clear the screen, TODO: find the best way to do this
-        system('cls||clear')
-        # sys.stdout.write('\033[2J')
-        # sys.stdout.write('\033[H')
-        # sys.stdout.flush()
+        self.clear()
 
         # Print the boards
-        sys.stdout.write(first_board)
-        sys.stdout.write(second_board)
+        print(first_board)
+        print(second_board)
 
     def is_valid(self, board: list, boat: Boat):
         # Check if the boat is out of bounds
